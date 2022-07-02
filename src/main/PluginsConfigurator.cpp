@@ -37,7 +37,10 @@ using ConfiguredPlugin = PluginsConfigurator::ConfiguredPlugin;
 /* BUILDER -------------------------------------------------------------------------------------- */
 
 PluginsConfigurator::Builder::Builder()
-: mAllocationStrategyConfigured(false), mUsageTimeoutMillisConfigured(false) {}
+: mAllocationStrategyConfigured(false), 
+  mUsageTimeoutMillisConfigured(false),
+  mUsageTimeoutMillis(0),
+  mAllocationStrategy(AllocationStrategy::FIRST) {}
 
 PluginsConfigurator::Builder& PluginsConfigurator::Builder::withAllocationStrategy(
     const AllocationStrategy allocationStrategy)
@@ -128,7 +131,12 @@ PluginsConfigurator::ConfiguredPlugin::ConfiguredPlugin(
   std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi,
   std::shared_ptr<PluginObservationExceptionHandlerSpi>  pluginObservationExceptionHandlerSpi,
   std::shared_ptr<CardReaderObservationExceptionHandlerSpi> readerObservationExceptionHandlerSpi)
-: mPlugin(plugin), mReaderConfiguratorSpi(readerConfiguratorSpi)
+: mPlugin(plugin), 
+  mReaderConfiguratorSpi(readerConfiguratorSpi),
+  mWithPluginMonitoring(false),
+  mWithReaderMonitoring(false),
+  mPluginObservationExceptionHandlerSpi(nullptr),
+  mReaderObservationExceptionHandlerSpi(nullptr)
 {
     if (pluginObservationExceptionHandlerSpi != nullptr) {
         mWithPluginMonitoring = true;
