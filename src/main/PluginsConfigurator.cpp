@@ -37,10 +37,10 @@ using ConfiguredPlugin = PluginsConfigurator::ConfiguredPlugin;
 /* BUILDER -------------------------------------------------------------------------------------- */
 
 PluginsConfigurator::Builder::Builder()
-: mAllocationStrategyConfigured(false), 
-  mUsageTimeoutMillisConfigured(false),
+: mAllocationStrategy(AllocationStrategy::FIRST),
+  mAllocationStrategyConfigured(false), 
   mUsageTimeoutMillis(0),
-  mAllocationStrategy(AllocationStrategy::FIRST) {}
+  mUsageTimeoutMillisConfigured(false) {}
 
 PluginsConfigurator::Builder& PluginsConfigurator::Builder::withAllocationStrategy(
     const AllocationStrategy allocationStrategy)
@@ -134,8 +134,8 @@ PluginsConfigurator::ConfiguredPlugin::ConfiguredPlugin(
 : mPlugin(plugin), 
   mReaderConfiguratorSpi(readerConfiguratorSpi),
   mWithPluginMonitoring(false),
-  mWithReaderMonitoring(false),
   mPluginObservationExceptionHandlerSpi(nullptr),
+  mWithReaderMonitoring(false),
   mReaderObservationExceptionHandlerSpi(nullptr)
 {
     if (pluginObservationExceptionHandlerSpi != nullptr) {
