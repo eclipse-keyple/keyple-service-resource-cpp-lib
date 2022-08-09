@@ -167,7 +167,7 @@ public:
         /**
          *
          */
-        bool mWithPluginMonitoring;
+        bool mWithPluginMonitoring = false;
 
         /**
          *
@@ -177,7 +177,7 @@ public:
         /**
          *
          */
-        bool mWithReaderMonitoring;
+        bool mWithReaderMonitoring = false;
 
         /**
          *
