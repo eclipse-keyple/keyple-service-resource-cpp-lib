@@ -1,10 +1,9 @@
 name: Publish API documentation
 
 on:
-  push:
-    branches:
-      - master
-      - doxygen
+  release:
+    types:
+      - published
 
 jobs:
   publish-doc:
