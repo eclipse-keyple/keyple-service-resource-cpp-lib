@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2022 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -30,9 +30,11 @@
 #include "Reader.h"
 
 /* Keyple Core Util */
+#include "HexUtil.h"
 #include "LoggerFactory.h"
 
 /* Calypsonet Terminal Reader */
+#include "CardReader.h"
 #include "CardReaderObserverSpi.h"
 #include "ObservableCardReader.h"
 
@@ -41,9 +43,11 @@ namespace core {
 namespace service {
 namespace resource {
 
+using namespace calypsonet::terminal::reader;
 using namespace calypsonet::terminal::reader::spi;
 using namespace keyple::core::service;
 using namespace keyple::core::service::spi;
+using namespace keyple::core::util;
 using namespace keyple::core::util::cpp;
 
 using ConfiguredPlugin = PluginsConfigurator::ConfiguredPlugin;
@@ -188,7 +192,7 @@ private:
     /**
      * Map an accepted reader of a "regular" plugin to a reader manager
      */
-    std::map<std::shared_ptr<Reader>, std::shared_ptr<ReaderManagerAdapter>>
+    std::map<std::shared_ptr<CardReader>, std::shared_ptr<ReaderManagerAdapter>>
         mReaderToReaderManagerMap;
 
     /**
@@ -244,7 +248,7 @@ private:
      * @param plugin The associated plugin.
      * @return A not null reference.
      */
-    std::shared_ptr<ReaderManagerAdapter> registerReader(std::shared_ptr<Reader> reader,
+    std::shared_ptr<ReaderManagerAdapter> registerReader(std::shared_ptr<CardReader> reader,
                                                          std::shared_ptr<Plugin> plugin);
 
     /**
@@ -269,7 +273,7 @@ private:
      * @param reader The reader to unregister.
      * @param plugin The associated plugin.
      */
-    void unregisterReader(std::shared_ptr<Reader> reader, std::shared_ptr<Plugin> plugin);
+    void unregisterReader(std::shared_ptr<CardReader> reader, std::shared_ptr<Plugin> plugin);
 
     /**
      * (private)<br>
@@ -292,7 +296,7 @@ private:
      * @param readerName The name of the reader.
      * @return Null if the reader is not or no longer registered.
      */
-    std::shared_ptr<Reader> getReader(const std::string& readerName) const;
+    std::shared_ptr<CardReader> getReader(const std::string& readerName) const;
 
     /**
      * (private)<br>
@@ -304,7 +308,7 @@ private:
      * @param reader The new reader.
      * @param plugin The associated plugin.
      */
-    void onReaderConnected(std::shared_ptr<Reader> reader, std::shared_ptr<Plugin> plugin);
+    void onReaderConnected(std::shared_ptr<CardReader> reader, std::shared_ptr<Plugin> plugin);
 
     /**
      * (private)<br>
@@ -315,7 +319,7 @@ private:
      * @param reader The reader to observe.
      * @param plugin The associated plugin.
      */
-    void startMonitoring(std::shared_ptr<Reader> reader, std::shared_ptr<Plugin> plugin);
+    void startMonitoring(std::shared_ptr<CardReader> reader, std::shared_ptr<Plugin> plugin);
 
     /**
      * (private)<br>
@@ -345,7 +349,7 @@ private:
      * @param reader The disconnected reader.
      * @param plugin The associated plugin.
      */
-    void onReaderDisconnected(std::shared_ptr<Reader> reader, std::shared_ptr<Plugin> plugin);
+    void onReaderDisconnected(std::shared_ptr<CardReader> reader, std::shared_ptr<Plugin> plugin);
 
     /**
      * (private)<br>

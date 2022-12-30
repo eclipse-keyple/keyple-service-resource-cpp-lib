@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2022 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -14,12 +14,14 @@
 
 #include <memory>
 
+/* Calypsonet Terminal Reader */
+#include "CardReader.h"
+
 /* Keyple Core Util */
 #include "LoggerFactory.h"
 
 /* Keyple Core Service */
 #include "CardResourceProfileExtension.h"
-#include "Reader.h"
 #include "Plugin.h"
 
 /* Keyple Service Resource */
@@ -33,6 +35,7 @@ namespace core {
 namespace service {
 namespace resource {
 
+using namespace calypsonet::terminal::reader;
 using namespace keyple::core::service;
 using namespace keyple::core::service::resource::spi;
 using namespace keyple::core::util::cpp;
@@ -59,7 +62,7 @@ public:
      *        automatically release.
      * @since 2.0.0
      */
-    ReaderManagerAdapter(std::shared_ptr<Reader> reader,
+    ReaderManagerAdapter(std::shared_ptr<CardReader> reader,
                          std::shared_ptr<Plugin> plugin,
                          std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi,
                          const int usageTimeoutMillis);
@@ -71,7 +74,7 @@ public:
      * @return A not null reference.
      * @since 2.0.0
      */
-    std::shared_ptr<Reader> getReader() const;
+    std::shared_ptr<CardReader> getReader() const;
 
     /**
      * (package-private)<br>
@@ -136,7 +139,7 @@ public:
      *        needed.
      * @return True if the card resource is locked.
      * @throw IllegalStateException If a new selection has been made and the current card does not
-     *        match the provided profile extension or is not the same smart card than the provided 
+     *        match the provided profile extension or is not the same smart card than the provided
      *        one.
      * @since 2.0.0
      */
@@ -162,14 +165,14 @@ public:
 
 private:
     /**
-     * 
+     *
      */
     const std::unique_ptr<Logger> mLogger = LoggerFactory::getLogger(typeid(ReaderManagerAdapter));
 
     /**
      * The associated reader
      */
-    std::shared_ptr<Reader> mReader;
+    std::shared_ptr<CardReader> mReader;
 
     /**
      * The associated plugin

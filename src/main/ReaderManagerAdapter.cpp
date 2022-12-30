@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2022 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -30,7 +30,7 @@ using namespace keyple::core::util::cpp;
 using namespace keyple::core::util::cpp::exception;
 
 ReaderManagerAdapter::ReaderManagerAdapter(
-   std::shared_ptr<Reader> reader,
+   std::shared_ptr<CardReader> reader,
    std::shared_ptr<Plugin> plugin,
    std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi,
    const int usageTimeoutMillis)
@@ -42,7 +42,7 @@ ReaderManagerAdapter::ReaderManagerAdapter(
   mIsBusy(false),
   mIsActive(false) {}
 
-std::shared_ptr<Reader> ReaderManagerAdapter::getReader() const
+std::shared_ptr<CardReader> ReaderManagerAdapter::getReader() const
 {
     return mReader;
 }

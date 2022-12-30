@@ -1,5 +1,5 @@
 /**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
+ * Copyright (c) 2022 Calypso Networks Association https://calypsonet.org/                        *
  *                                                                                                *
  * See the NOTICE file(s) distributed with this work for additional information regarding         *
  * copyright ownership.                                                                           *
@@ -14,8 +14,8 @@
 
 #include <memory>
 
-/* Keyple Core Service */
-#include "Reader.h"
+/* Calypsonet Terminal Reader */
+#include "CardReader.h"
 
 namespace keyple {
 namespace core {
@@ -23,10 +23,10 @@ namespace service {
 namespace resource {
 namespace spi {
 
-using namespace keyple::core::service;
+using namespace calypsonet::terminal::reader;
 
 /**
- * Reader configurator used to setup a new reader connected with its specific settings.
+ * Reader configurator used to set up a new card reader connected with its specific settings.
  *
  * <p>Note: since it depends on the type of reader, only the application developer knows what
  * settings to apply to the readers implemented by the Card Resource Service in order for them to be
@@ -37,14 +37,15 @@ using namespace keyple::core::service;
 class ReaderConfiguratorSpi {
 public:
     /**
-     * Invoked when a new reader is connected and accepted by at least one card resource profile.
+     * Invoked when a new card reader is connected and accepted by at least one card resource
+     * profile.
      *
-     * <p>The setup is required for some specific readers and must be do first.
+     * <p>The setup is required for some specific readers and must be done first.
      *
-     * @param reader The reader to setup.
+     * @param reader The reader to set up.
      * @since 2.0.0
      */
-    virtual void setupReader(std::shared_ptr<Reader> reader) = 0;
+    virtual void setupReader(std::shared_ptr<CardReader> reader) = 0;
 };
 
 }
