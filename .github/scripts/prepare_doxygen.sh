@@ -36,6 +36,3 @@ sed -i "2s/.*/title: $project_name/" _config.yml
 cd ..
 
 echo "Local docs update finished."
-
-
-

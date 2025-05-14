@@ -1,52 +1,56 @@
-/**************************************************************************************************
- * Copyright (c) 2021 Calypso Networks Association https://calypsonet.org/                        *
- *                                                                                                *
- * See the NOTICE file(s) distributed with this work for additional information regarding         *
- * copyright ownership.                                                                           *
- *                                                                                                *
- * This program and the accompanying materials are made available under the terms of the Eclipse  *
- * Public License 2.0 which is available at http://www.eclipse.org/legal/epl-2.0                  *
- *                                                                                                *
- * SPDX-License-Identifier: EPL-2.0                                                               *
- **************************************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2025 Calypso Networks Association https://calypsonet.org/    *
+ *                                                                            *
+ * See the NOTICE file(s) distributed with this work for additional           *
+ * information regarding copyright ownership.                                 *
+ *                                                                            *
+ * This program and the accompanying materials are made available under the   *
+ * terms of the Eclipse Public License 2.0 which is available at              *
+ * http://www.eclipse.org/legal/epl-2.0                                       *
+ *                                                                            *
+ * SPDX-License-Identifier: EPL-2.0                                           *
+ ******************************************************************************/
 
-#include "PluginsConfigurator.h"
+#include "keyple/core/service/resource/PluginsConfigurator.hpp"
 
-/* Keyple Core Util */
-#include "Arrays.h"
-#include "IllegalArgumentException.h"
-#include "IllegalStateException.h"
-#include "KeypleAssert.h"
-
-/* Keyple Core Service */
-#include "PoolPlugin.h"
+#include "keyple/core/service/PoolPlugin.hpp"
+#include "keyple/core/service/spi/PluginObservationExceptionHandlerSpi.hpp"
+#include "keyple/core/util/KeypleAssert.hpp"
+#include "keyple/core/util/cpp/Arrays.hpp"
+#include "keyple/core/util/cpp/exception/IllegalArgumentException.hpp"
+#include "keyple/core/util/cpp/exception/IllegalStateException.hpp"
 
 namespace keyple {
 namespace core {
 namespace service {
 namespace resource {
 
-using namespace keyple::core::service;
-using namespace keyple::core::util;
-using namespace keyple::core::util::cpp;
-using namespace keyple::core::util::cpp::exception;
+using keyple::core::service::PoolPlugin;
+using keyple::core::service::spi::PluginObservationExceptionHandlerSpi;
+using keyple::core::util::Assert;
+using keyple::core::util::cpp::Arrays;
+using keyple::core::util::cpp::exception::IllegalArgumentException;
+using keyple::core::util::cpp::exception::IllegalStateException;
 
 using AllocationStrategy = PluginsConfigurator::AllocationStrategy;
 using ConfiguredPlugin = PluginsConfigurator::ConfiguredPlugin;
 
-/* BUILDER -------------------------------------------------------------------------------------- */
+/* BUILDER ------------------------------------------------------------------ */
 
 PluginsConfigurator::Builder::Builder()
-: mAllocationStrategy(AllocationStrategy::FIRST),
-  mAllocationStrategyConfigured(false), 
-  mUsageTimeoutMillis(0),
-  mUsageTimeoutMillisConfigured(false) {}
+: mAllocationStrategy(AllocationStrategy::FIRST)
+, mAllocationStrategyConfigured(false)
+, mUsageTimeoutMillis(0)
+, mUsageTimeoutMillisConfigured(false)
+{
+}
 
-PluginsConfigurator::Builder& PluginsConfigurator::Builder::withAllocationStrategy(
+PluginsConfigurator::Builder&
+PluginsConfigurator::Builder::withAllocationStrategy(
     const AllocationStrategy allocationStrategy)
 {
     if (mAllocationStrategyConfigured == true) {
-        throw IllegalStateException("Allocation strategy already configured.");
+        throw IllegalStateException("Allocation strategy already configured");
     }
 
     mAllocationStrategy = allocationStrategy;
@@ -55,13 +59,14 @@ PluginsConfigurator::Builder& PluginsConfigurator::Builder::withAllocationStrate
     return *this;
 }
 
-PluginsConfigurator::Builder& PluginsConfigurator::Builder::withUsageTimeout(
-    const int usageTimeoutMillis)
+PluginsConfigurator::Builder&
+PluginsConfigurator::Builder::withUsageTimeout(const int usageTimeoutMillis)
 {
-    Assert::getInstance().greaterOrEqual(usageTimeoutMillis, 1, "usageTimeoutMillis");
+    Assert::getInstance().greaterOrEqual(
+        usageTimeoutMillis, 1, "usageTimeoutMillis");
 
     if (mUsageTimeoutMillisConfigured == true) {
-        throw IllegalStateException("Usage timeout already configured.");
+        throw IllegalStateException("Usage timeout already configured");
     }
 
     mUsageTimeoutMillis = usageTimeoutMillis;
@@ -70,44 +75,53 @@ PluginsConfigurator::Builder& PluginsConfigurator::Builder::withUsageTimeout(
     return *this;
 }
 
-PluginsConfigurator::Builder& PluginsConfigurator::Builder::addPlugin(
-    std::shared_ptr<Plugin> plugin, std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi)
+PluginsConfigurator::Builder&
+PluginsConfigurator::Builder::addPlugin(
+    std::shared_ptr<Plugin> plugin,
+    std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi)
 {
-    return addPluginWithMonitoring(plugin, readerConfiguratorSpi, nullptr, nullptr);
+    return addPluginWithMonitoring(
+        plugin, readerConfiguratorSpi, nullptr, nullptr);
 }
 
-PluginsConfigurator::Builder& PluginsConfigurator::Builder::addPluginWithMonitoring(
+PluginsConfigurator::Builder&
+PluginsConfigurator::Builder::addPluginWithMonitoring(
     std::shared_ptr<Plugin> plugin,
     std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi,
-    std::shared_ptr<PluginObservationExceptionHandlerSpi> pluginObservationExceptionHandlerSpi,
-    std::shared_ptr<CardReaderObservationExceptionHandlerSpi> readerObservationExceptionHandlerSpi)
+    std::shared_ptr<PluginObservationExceptionHandlerSpi>
+        pluginObservationExceptionHandlerSpi,
+    std::shared_ptr<CardReaderObservationExceptionHandlerSpi>
+        readerObservationExceptionHandlerSpi)
 {
-    Assert::getInstance().notNull(plugin, "plugin")
-                         .notNull(readerConfiguratorSpi, "readerConfiguratorSpi");
+    Assert::getInstance()
+        .notNull(plugin, "plugin")
+        .notNull(readerConfiguratorSpi, "readerConfiguratorSpi");
 
     const auto pool = std::dynamic_pointer_cast<PoolPlugin>(plugin);
     if (pool != nullptr) {
-        throw IllegalArgumentException("Plugin must be an instance of Plugin or ObservablePlugin");
+        throw IllegalArgumentException(
+            "Plugin must be an instance of Plugin or ObservablePlugin");
     }
 
     if (Arrays::contains(mPlugins, plugin)) {
-        throw IllegalStateException("Plugin already configured.");
+        throw IllegalStateException("Plugin already configured");
     }
 
     mPlugins.push_back(plugin);
-    mConfiguredPlugins.push_back(
-        std::make_shared<ConfiguredPlugin>(plugin,
-                                           readerConfiguratorSpi,
-                                           pluginObservationExceptionHandlerSpi,
-                                           readerObservationExceptionHandlerSpi));
+    mConfiguredPlugins.push_back(std::make_shared<ConfiguredPlugin>(
+        plugin,
+        readerConfiguratorSpi,
+        pluginObservationExceptionHandlerSpi,
+        readerObservationExceptionHandlerSpi));
 
     return *this;
 }
 
-std::shared_ptr<PluginsConfigurator> PluginsConfigurator::Builder::build()
+std::shared_ptr<PluginsConfigurator>
+PluginsConfigurator::Builder::build()
 {
     if (mPlugins.empty()) {
-        throw IllegalStateException("No plugin was configured.");
+        throw IllegalStateException("No plugin was configured");
     }
 
     if (mAllocationStrategyConfigured == false) {
@@ -124,103 +138,116 @@ std::shared_ptr<PluginsConfigurator> PluginsConfigurator::Builder::build()
     return std::make_shared<PluginsConfigurator>(this);
 }
 
-/* CONFIGURED PLUGIN ---------------------------------------------------------------------------- */
+/* CONFIGURED PLUGIN -------------------------------------------------------- */
 
 PluginsConfigurator::ConfiguredPlugin::ConfiguredPlugin(
-  std::shared_ptr<Plugin> plugin,
-  std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi,
-  std::shared_ptr<PluginObservationExceptionHandlerSpi>  pluginObservationExceptionHandlerSpi,
-  std::shared_ptr<CardReaderObservationExceptionHandlerSpi> readerObservationExceptionHandlerSpi)
-: mPlugin(plugin), 
-  mReaderConfiguratorSpi(readerConfiguratorSpi),
-  mWithPluginMonitoring(false),
-  mPluginObservationExceptionHandlerSpi(nullptr),
-  mWithReaderMonitoring(false),
-  mReaderObservationExceptionHandlerSpi(nullptr)
+    std::shared_ptr<Plugin> plugin,
+    std::shared_ptr<ReaderConfiguratorSpi> readerConfiguratorSpi,
+    std::shared_ptr<PluginObservationExceptionHandlerSpi>
+        pluginObservationExceptionHandlerSpi,
+    std::shared_ptr<CardReaderObservationExceptionHandlerSpi>
+        readerObservationExceptionHandlerSpi)
+: mPlugin(plugin)
+, mReaderConfiguratorSpi(readerConfiguratorSpi)
+, mWithPluginMonitoring(false)
+, mPluginObservationExceptionHandlerSpi(nullptr)
+, mWithReaderMonitoring(false)
+, mReaderObservationExceptionHandlerSpi(nullptr)
 {
     if (pluginObservationExceptionHandlerSpi != nullptr) {
         mWithPluginMonitoring = true;
-        mPluginObservationExceptionHandlerSpi = pluginObservationExceptionHandlerSpi;
+        mPluginObservationExceptionHandlerSpi
+            = pluginObservationExceptionHandlerSpi;
     }
 
     if (readerObservationExceptionHandlerSpi != nullptr) {
         mWithReaderMonitoring = true;
-        mReaderObservationExceptionHandlerSpi = readerObservationExceptionHandlerSpi;
+        mReaderObservationExceptionHandlerSpi
+            = readerObservationExceptionHandlerSpi;
     }
 }
 
-std::shared_ptr<Plugin> PluginsConfigurator::ConfiguredPlugin::getPlugin() const
+std::shared_ptr<Plugin>
+PluginsConfigurator::ConfiguredPlugin::getPlugin() const
 {
     return mPlugin;
 }
 
 std::shared_ptr<ReaderConfiguratorSpi>
-    PluginsConfigurator::ConfiguredPlugin::getReaderConfiguratorSpi() const
+PluginsConfigurator::ConfiguredPlugin::getReaderConfiguratorSpi() const
 {
     return mReaderConfiguratorSpi;
 }
 
-bool PluginsConfigurator::ConfiguredPlugin::isWithPluginMonitoring() const
+bool
+PluginsConfigurator::ConfiguredPlugin::isWithPluginMonitoring() const
 {
     return mWithPluginMonitoring;
 }
 
 std::shared_ptr<PluginObservationExceptionHandlerSpi>
-    PluginsConfigurator::ConfiguredPlugin::getPluginObservationExceptionHandlerSpi() const
+PluginsConfigurator::ConfiguredPlugin::getPluginObservationExceptionHandlerSpi()
+    const
 {
     return mPluginObservationExceptionHandlerSpi;
 }
 
-bool PluginsConfigurator::ConfiguredPlugin::isWithReaderMonitoring() const
+bool
+PluginsConfigurator::ConfiguredPlugin::isWithReaderMonitoring() const
 {
     return mWithReaderMonitoring;
 }
 
 std::shared_ptr<CardReaderObservationExceptionHandlerSpi>
-    PluginsConfigurator::ConfiguredPlugin::getReaderObservationExceptionHandlerSpi() const
+PluginsConfigurator::ConfiguredPlugin::getReaderObservationExceptionHandlerSpi()
+    const
 {
     return mReaderObservationExceptionHandlerSpi;
 }
 
-/* PLUGINS CONFIGURATOR ------------------------------------------------------------------------- */
+/* PLUGINS CONFIGURATOR ----------------------------------------------------- */
 
-AllocationStrategy PluginsConfigurator::getAllocationStrategy() const
+AllocationStrategy
+PluginsConfigurator::getAllocationStrategy() const
 {
     return mAllocationStrategy;
 }
 
-int PluginsConfigurator::getUsageTimeoutMillis() const
+int
+PluginsConfigurator::getUsageTimeoutMillis() const
 {
     return mUsageTimeoutMillis;
 }
 
-const std::vector<std::shared_ptr<Plugin>>& PluginsConfigurator::getPlugins() const
+const std::vector<std::shared_ptr<Plugin>>&
+PluginsConfigurator::getPlugins() const
 {
     return mPlugins;
 }
 
-const std::vector<std::shared_ptr<ConfiguredPlugin>>& PluginsConfigurator::getConfiguredPlugins()
-    const
+const std::vector<std::shared_ptr<ConfiguredPlugin>>&
+PluginsConfigurator::getConfiguredPlugins() const
 {
     return mConfiguredPlugins;
 }
 
-PluginsConfigurator::Builder* PluginsConfigurator::builder()
+PluginsConfigurator::Builder*
+PluginsConfigurator::builder()
 {
     return new Builder();
 }
 
 PluginsConfigurator::PluginsConfigurator(PluginsConfigurator::Builder* builder)
-: mAllocationStrategy(builder->mAllocationStrategy),
-  mUsageTimeoutMillis(builder->mUsageTimeoutMillis),
-  mPlugins(builder->mPlugins),
-  mConfiguredPlugins(builder->mConfiguredPlugins)
+: mAllocationStrategy(builder->mAllocationStrategy)
+, mUsageTimeoutMillis(builder->mUsageTimeoutMillis)
+, mPlugins(builder->mPlugins)
+, mConfiguredPlugins(builder->mConfiguredPlugins)
 {
     /* Deleted builder here. It's been allocated with new */
     delete builder;
 }
 
-}
-}
-}
-}
+} /* namespace resource */
+} /* namespace service */
+} /* namespace core */
+} /* namespace keyple */

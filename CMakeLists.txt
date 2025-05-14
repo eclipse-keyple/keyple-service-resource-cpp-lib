@@ -1,21 +1,24 @@
-# *************************************************************************************************
-# Copyright (c) 2023 Calypso Networks Association https://calypsonet.org/                         *
-#                                                                                                 *
-# See the NOTICE file(s) distributed with this work for additional information regarding          *
-# copyright ownership.                                                                            *
-#                                                                                                 *
-# This program and the accompanying materials are made available under the terms of the Eclipse   *
-# Public License 2.0 which is available at http://www.eclipse.org/legal/epl-2.0                   *
-#                                                                                                 *
-# SPDX-License-Identifier: EPL-2.0                                                                *
-# *************************************************************************************************/
+#******************************************************************************
+#* Copyright (c) 2025 Calypso Networks Association https://calypsonet.org/    *
+#*                                                                            *
+#* See the NOTICE file(s) distributed with this work for additional           *
+#* information regarding copyright ownership.                                 *
+#*                                                                            *
+#* This program and the accompanying materials are made available under the   *
+#* terms of the Eclipse Public License 2.0 which is available at              *
+#* http://www.eclipse.org/legal/epl-2.0                                       *
+#*                                                                            *
+#* SPDX-License-Identifier: EPL-2.0                                           *
+#******************************************************************************/
 
-PROJECT(KeypleServiceResourceCppLib C CXX)
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+PROJECT(KeypleServiceResourceCppLib
+        VERSION 3.1.0
+        LANGUAGES C CXX)
 
-SET(CMAKE_PROJECT_VERSION_MAJOR "2")
-SET(CMAKE_PROJECT_VERSION_MINOR "0")
-SET(CMAKE_PROJECT_VERSION_PATCH "4")
+SET(CMAKE_PROJECT_VERSION_MAJOR "3")
+SET(CMAKE_PROJECT_VERSION_MINOR "1")
+SET(CMAKE_PROJECT_VERSION_PATCH "0")
 
 SET(CMAKE_PROJECT_VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.
                            ${CMAKE_PROJECT_VERSION_MINOR}.

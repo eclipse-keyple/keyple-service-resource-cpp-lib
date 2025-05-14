@@ -11,5 +11,9 @@
 #* SPDX-License-Identifier: EPL-2.0                                           *
 #******************************************************************************/
 
-# Add projects
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/main)
+cstyleCast
+missingIncludeSystem
+missingInclude
+unusedStructMember
+accessMoved
+normalCheckLevelMaxBranches
