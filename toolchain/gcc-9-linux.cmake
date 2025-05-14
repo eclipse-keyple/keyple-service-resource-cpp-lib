@@ -43,4 +43,3 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmax-errors=10")
 
 # Libraries type
 SET(LIBRARY_TYPE SHARED)
-

@@ -11,26 +11,42 @@
  * SPDX-License-Identifier: EPL-2.0                                           *
  ******************************************************************************/
 
-#include "keyple/core/service/resource/CardResourceServiceProvider.hpp"
-
-#include "keyple/core/service/resource/CardResourceServiceAdapter.hpp"
+#include "keyple/core/service/resource/CardResourceAdapter.hpp"
 
 namespace keyple {
 namespace core {
 namespace service {
 namespace resource {
 
-CardResourceServiceProvider::CardResourceServiceProvider()
+CardResourceAdapter::CardResourceAdapter(
+  const std::shared_ptr<CardReader> reader, 
+  const std::shared_ptr<KeypleReaderExtension> readerExtension, 
+  const std::shared_ptr<SmartCard> smartCard)
+: mReader(reader)
+, mReaderExtension(readerExtension)
+, mSmartCard(smartCard)
 {
 }
 
-std::shared_ptr<CardResourceService>
-CardResourceServiceProvider::getService()
+std::shared_ptr<CardReader> CardResourceAdapter::getReader() const 
 {
-    return CardResourceServiceAdapter::getInstance();
+    return mReader;
+}
+
+std::shared_ptr<KeypleReaderExtension>
+CardResourceAdapter::getReaderExtension() const
+{
+    return mReaderExtension;
+}
+
+std::shared_ptr<SmartCard>
+CardResourceAdapter::getSmartCard() const 
+{
+    return mSmartCard;
 }
 
 } /* namespace resource */
 } /* namespace service */
 } /* namespace core */
-} /* namespace keyple */
+} /* namespace keyple */   
+ 

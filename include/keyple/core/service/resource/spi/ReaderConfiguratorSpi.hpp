@@ -11,25 +11,47 @@
  * SPDX-License-Identifier: EPL-2.0                                           *
  ******************************************************************************/
 
-#include "keyple/core/service/resource/CardResourceServiceProvider.hpp"
+#pragma once
 
-#include "keyple/core/service/resource/CardResourceServiceAdapter.hpp"
+#include <memory>
+
+#include "keypop/reader/CardReader.hpp"
 
 namespace keyple {
 namespace core {
 namespace service {
 namespace resource {
+namespace spi {
 
-CardResourceServiceProvider::CardResourceServiceProvider()
-{
-}
+using keypop::reader::CardReader;
 
-std::shared_ptr<CardResourceService>
-CardResourceServiceProvider::getService()
-{
-    return CardResourceServiceAdapter::getInstance();
-}
+/**
+ * Reader configurator used to set up a new card reader connected with its
+ * specific settings.
+ *
+ * <p>Note: since it depends on the type of reader, only the application
+ * developer knows what settings to apply to the readers implemented by the Card
+ * Resource Service in order for them to be fully operational.
+ *
+ * @since 2.0.0
+ */
+class ReaderConfiguratorSpi {
+public:
+    /**
+     * Invoked when a new card reader is connected and accepted by at least one
+     * card resource profile.
+     *
+     * <p>The setup is required for some specific readers and must be done
+     * first.
+     *
+     * @param reader The reader to set up.
+     * @since 2.0.0
+     */
+    virtual void 
+    setupReader(std::shared_ptr<CardReader> reader) = 0;
+};
 
+} /* namespace spi */
 } /* namespace resource */
 } /* namespace service */
 } /* namespace core */

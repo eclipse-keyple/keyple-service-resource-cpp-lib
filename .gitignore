@@ -11,5 +11,45 @@
 #* SPDX-License-Identifier: EPL-2.0                                           *
 #******************************************************************************/
 
-# Add projects
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/main)
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Build directories
+build
+out
+
+# IDE files
+CMakeSettings.json
+
+# OS
+.DS_Store
