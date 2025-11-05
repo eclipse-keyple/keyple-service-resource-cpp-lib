@@ -11,26 +11,39 @@
  * SPDX-License-Identifier: EPL-2.0                                           *
  ******************************************************************************/
 
-#include "keyple/core/service/resource/CardResourceServiceProvider.hpp"
+#pragma once
 
-#include "keyple/core/service/resource/CardResourceServiceAdapter.hpp"
+#include "keyple/core/service/resource/CardResourceService.hpp"
+#include "keyple/core/service/resource/KeypleServiceResourceExport.hpp"
 
 namespace keyple {
 namespace core {
 namespace service {
 namespace resource {
 
-CardResourceServiceProvider::CardResourceServiceProvider()
-{
-}
+/**
+ * Provider of the CardResourceService.
+ *
+ * @since 2.0.0
+ */
+class KEYPLESERVICERESOURCE_API CardResourceServiceProvider final {
+public:
+    /**
+     * Gets the unique instance of CardResourceService.
+     *
+     * @return A not null reference.
+     * @since 2.0.0
+     */
+    static std::shared_ptr<CardResourceService> getService();
 
-std::shared_ptr<CardResourceService>
-CardResourceServiceProvider::getService()
-{
-    return CardResourceServiceAdapter::getInstance();
-}
+private:
+    /**
+     * Private constructor
+     */
+    CardResourceServiceProvider();
+};
 
-} /* namespace resource */
-} /* namespace service */
-} /* namespace core */
-} /* namespace keyple */
+}
+}
+}
+}

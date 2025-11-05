@@ -11,5 +11,7 @@
 #* SPDX-License-Identifier: EPL-2.0                                           *
 #******************************************************************************/
 
-# Add projects
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/main)
+Checks: '-checks=-*,clang-analyzer-*,-clang-analyzer-cplusplus*'
+WarningsAsErrors: true
+HeaderFilterRegex: '.*'
+FormatStyle: webkit
