@@ -1,0 +1,23 @@
+/**
+ * @mainpage Keyple Service Resource C++ Library
+ *
+ * @section overview Overview
+ *
+ * The **Keyple Service Resource C++ Library** is a Keyple add-on that provides
+ * a profile-based card resource allocation mechanism for managing smart card
+ * resources in multi-reader environments.
+ *
+ * @section key_features Key Features
+ *
+ * - Profile-based card resource allocation
+ * - Automatic reader and card selection
+ * - Resource pooling and management
+ * - Multi-reader environment support
+ * - Dynamic resource allocation strategies
+ *
+ * @section resources Resources
+ *
+ * - **Documentation**: [keyple.org](https://keyple.org)
+ * - **API Documentation**: [docs.keyple.org/keyple-service-resource-cpp-lib](https://docs.keyple.org/keyple-service-resource-cpp-lib)
+ * - **Examples**: [github.com/eclipse/keyple-cpp-example](https://github.com/eclipse/keyple-cpp-example)
+ */
