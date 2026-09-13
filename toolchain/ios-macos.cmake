@@ -92,4 +92,3 @@ SET(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -Wl,-search_paths_first")
 
 # Libraries type
 SET(LIBRARY_TYPE STATIC)
-
