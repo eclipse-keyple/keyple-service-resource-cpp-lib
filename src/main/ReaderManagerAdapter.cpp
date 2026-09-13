@@ -114,8 +114,8 @@ ReaderManagerAdapter::lock(
         }
 
         mLogger->warn(
-            "Reader [%] automatically unlocked due to a usage duration over "
-            "than % milliseconds\n",
+            "Reader automatically unlocked due to a usage timeout exceeded " \
+            "[reader=%, usageTimeoutMs=%]\n",
             mReader->getName(),
             mUsageTimeoutMillis);
     }

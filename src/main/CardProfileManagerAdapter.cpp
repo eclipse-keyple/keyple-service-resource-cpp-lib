@@ -73,10 +73,6 @@ CardProfileManagerAdapter::removeCardResource(
 
     if (it != mCardResources.end()) {
         mCardResources.erase(it);
-        mLogger->debug(
-            "Remove % from profile [%]\n",
-            CardResourceServiceAdapter::getCardResourceInfo(cardResource),
-            mCardProfile->getProfileName());
     }
 }
 
@@ -194,16 +190,16 @@ CardProfileManagerAdapter::initializeCardResource(
             if (!Arrays::contains(mCardResources, cardResource)) {
                 mCardResources.push_back(cardResource);
                 mLogger->info(
-                    "Add % to profile [%]\n",
+                    "New card resource added [profile=%, cardResource=%]\n",
+                    mCardProfile->getProfileName(),
                     CardResourceServiceAdapter::getCardResourceInfo(
-                        cardResource),
-                    mCardProfile->getProfileName());
+                        cardResource));
             } else {
                 mLogger->info(
-                    "% already present in profile [%]\n",
+                    "Card resource already present [profile=%, cardResource=%]\n",
+                    mCardProfile->getProfileName(),
                     CardResourceServiceAdapter::getCardResourceInfo(
-                        cardResource),
-                    mCardProfile->getProfileName());
+                        cardResource));
             }
         }
     }

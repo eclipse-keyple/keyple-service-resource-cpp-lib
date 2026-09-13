@@ -16,6 +16,7 @@
 #include <memory>
 
 #include "keyple/core/service/resource/CardResource.hpp"
+#include "keyple/core/service/resource/KeypleServiceResourceExport.hpp"
 #include "keypop/reader/CardReader.hpp"
 
 namespace keyple {
@@ -30,8 +31,9 @@ using keypop::reader::CardReader;
  *
  * @since 2.1.0
  */
-class CardResourceAdapter final : public CardResource {
-public:  
+class KEYPLESERVICERESOURCE_API CardResourceAdapter final
+: public CardResource {
+public:
     /**
      * Creates new instance.
      *
@@ -41,10 +43,10 @@ public:
      * @since 2.1.0
      */
     CardResourceAdapter(
-        const std::shared_ptr<CardReader> reader, 
-        const std::shared_ptr<KeypleReaderExtension> readerExtension, 
+        const std::shared_ptr<CardReader> reader,
+        const std::shared_ptr<KeypleReaderExtension> readerExtension,
         const std::shared_ptr<SmartCard> smartCard);
-  
+
     /**
      * {@inheritDoc}
      *
@@ -52,7 +54,7 @@ public:
      */
     std::shared_ptr<CardReader>
     getReader() const override;
-  
+
     /**
      * {@inheritDoc}
      *
@@ -60,7 +62,7 @@ public:
      */
     std::shared_ptr<KeypleReaderExtension>
     getReaderExtension() const override;
-  
+
     /**
      * {@inheritDoc}
      *
@@ -69,19 +71,31 @@ public:
     std::shared_ptr<SmartCard>
     getSmartCard() const override;
 
+    /**
+     *
+     */
+    friend KEYPLESERVICERESOURCE_API std::ostream&
+    operator<<(std::ostream& os, const CardResourceAdapter& cra);
+
+    /**
+     *
+     */
+    friend KEYPLESERVICERESOURCE_API std::ostream& operator<<(
+        std::ostream& os, const std::shared_ptr<CardResourceAdapter> cra);
+
 private:
     /**
-     * 
+     *
      */
     const std::shared_ptr<CardReader> mReader;
 
     /**
-     * 
+     *
      */
     const std::shared_ptr<KeypleReaderExtension> mReaderExtension;
 
     /**
-     * 
+     *
      */
     const std::shared_ptr<SmartCard> mSmartCard;
 };
