@@ -13,14 +13,22 @@
 
 #include "keyple/core/service/resource/CardResourceAdapter.hpp"
 
+#include <ostream>
+
+#include "keyple/core/util/HexUtil.hpp"
+#include "keyple/core/util/cpp/System.hpp"
+
 namespace keyple {
 namespace core {
 namespace service {
 namespace resource {
 
+using keyple::core::util::HexUtil;
+using keyple::core::util::cpp::System;
+
 CardResourceAdapter::CardResourceAdapter(
-  const std::shared_ptr<CardReader> reader, 
-  const std::shared_ptr<KeypleReaderExtension> readerExtension, 
+  const std::shared_ptr<CardReader> reader,
+  const std::shared_ptr<KeypleReaderExtension> readerExtension,
   const std::shared_ptr<SmartCard> smartCard)
 : mReader(reader)
 , mReaderExtension(readerExtension)
@@ -28,7 +36,7 @@ CardResourceAdapter::CardResourceAdapter(
 {
 }
 
-std::shared_ptr<CardReader> CardResourceAdapter::getReader() const 
+std::shared_ptr<CardReader> CardResourceAdapter::getReader() const
 {
     return mReader;
 }
@@ -40,13 +48,49 @@ CardResourceAdapter::getReaderExtension() const
 }
 
 std::shared_ptr<SmartCard>
-CardResourceAdapter::getSmartCard() const 
+CardResourceAdapter::getSmartCard() const
 {
     return mSmartCard;
+}
+
+std::ostream&
+operator<<(std::ostream& os, const CardResourceAdapter& cra)
+{
+    os << "CARD_RESOURCE_ADAPTER: {"
+       << "READER_NAME: " << cra.mReader->getName() << ", "
+       << "READER_HASH_CODE: "
+          << HexUtil::toHex(System::identityHashCode(cra.mReader)) << ", "
+       << "SMART_CARD_HASH_CODE: "
+          << HexUtil::toHex(System::identityHashCode(cra.mSmartCard)) << ", "
+       << "}";
+
+    return os;
+}
+
+/**
+ *
+ */
+std::ostream&
+operator<<(
+    std::ostream& os, const std::shared_ptr<CardResourceAdapter> cra)
+{
+    if (cra == nullptr) {
+        os << "CARD_RESOURCE_ADAPTER: null";
+    } else {
+        os << "CARD_RESOURCE_ADAPTER: {"
+           << "HASH_CODE: " << HexUtil::toHex(System::identityHashCode(cra)) << ", "
+           << "READER_NAME: " << cra->mReader->getName() << ", "
+           << "READER_HASH_CODE: "
+               << HexUtil::toHex(System::identityHashCode(cra->mReader)) << ", "
+           << "SMART_CARD_HASH_CODE: "
+               << HexUtil::toHex(System::identityHashCode(cra->mSmartCard)) << ", "
+           << "}";
+    }
+
+    return os;
 }
 
 } /* namespace resource */
 } /* namespace service */
 } /* namespace core */
-} /* namespace keyple */   
- 
+} /* namespace keyple */

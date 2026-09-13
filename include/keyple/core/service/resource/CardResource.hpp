@@ -14,6 +14,7 @@
 #pragma once
 
 #include <memory>
+#include <ostream>
 
 #include "keyple/core/common/KeypleReaderExtension.hpp"
 #include "keyple/core/service/resource/KeypleServiceResourceExport.hpp"
@@ -34,7 +35,7 @@ using keypop::reader::selection::spi::SmartCard;
  *
  * @since 2.0.0
  */
-class CardResource {
+class KEYPLESERVICERESOURCE_API CardResource {
 public:
     /**
      * Returns the reader
@@ -62,6 +63,33 @@ public:
      */
     virtual std::shared_ptr<SmartCard>
     getSmartCard() const = 0;
+
+    /**
+     *
+     */
+    friend KEYPLESERVICERESOURCE_API std::ostream&
+    operator<<(std::ostream& os, const CardResource& /*cr*/)
+    {
+        os << "CARD_RESOURCE: {}";
+
+        return os;
+    }
+
+    /**
+     *
+     */
+    friend KEYPLESERVICERESOURCE_API std::ostream& operator<<(
+        std::ostream& os, const std::shared_ptr<CardResource> cr)
+    {
+        if (cr == nullptr) {
+            os << "CARD_RESOURCE: null";
+        } else {
+            os << *cr;
+        }
+
+        return os;
+    }
+
 };
 
 } /* namespace resource */

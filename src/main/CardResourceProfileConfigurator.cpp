@@ -122,7 +122,7 @@ Builder::withReaderNameRegex(const std::string& readerNameRegex)
         Pattern::compile(readerNameRegex);
     } catch (const PatternSyntaxException&) {
         throw IllegalArgumentException(
-            "Invalid regular expression: " + readerNameRegex);
+            "Invalid regular expression [regex=" + readerNameRegex + "]");
     }
 
     mReaderNameRegex = readerNameRegex;
