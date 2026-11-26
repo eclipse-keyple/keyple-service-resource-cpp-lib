@@ -15,7 +15,8 @@ SET(LIBRARY_NAME keypleserviceresourcecpplib)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DKEYPLESERVICERESOURCE_EXPORT")
 
-INCLUDE("CMakeLists.txt.keyple-service")
+FIND_PACKAGE(keyple-service-cpp-lib REQUIRED CONFIG)
+FIND_PACKAGE(keyple-util-cpp-lib REQUIRED CONFIG)
 
 ADD_LIBRARY(
 
@@ -50,6 +51,7 @@ TARGET_LINK_LIBRARIES(
     PUBLIC
 
     Keyple::Service
+    Keyple::Util
 )
 
 ADD_LIBRARY(
@@ -59,4 +61,20 @@ ADD_LIBRARY(
     ALIAS
 
     ${LIBRARY_NAME}
+)
+
+INSTALL(
+
+    TARGETS ${LIBRARY_NAME}
+
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+INSTALL(
+
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/
+
+    DESTINATION include
 )

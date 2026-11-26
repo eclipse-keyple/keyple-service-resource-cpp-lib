@@ -9,4 +9,4 @@ on:
 
 jobs:
   call-reusable-workflow:
-    uses: eclipse-keyple/keyple-actions/.github/workflows/reusable-cpp-build-and-test.yml@main # NOSONAR - Same organization, trusted source
+    uses: eclipse-keyple/keyple-actions/.github/workflows/reusable-conan-build-and-test.yml@main # NOSONAR - Same organization, trusted source
